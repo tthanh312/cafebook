@@ -1,0 +1,106 @@
+[
+  {
+    "id": "1",
+    "name": "Cà phê đen đá",
+    "price": 25000,
+    "category": "Cà phê",
+    "image": "https://images.unsplash.com/photo-1559056199-641a0ac8b3f4?w=500&h=500&fit=crop",
+    "description": "Cà phê đen đậm đà, được pha lạnh với đá"
+  },
+  {
+    "id": "2",
+    "name": "Cà phê sữa đá",
+    "price": 30000,
+    "category": "Cà phê",
+    "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&h=500&fit=crop",
+    "description": "Cà phê sữa lạnh, mượt mà và thơm ngon"
+  },
+  {
+    "id": "3",
+    "name": "Cà phê sữa nóng",
+    "price": 28000,
+    "category": "Cà phê",
+    "image": "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=500&h=500&fit=crop",
+    "description": "Cà phê sữa ấm nóng, tươi ngon"
+  },
+  {
+    "id": "4",
+    "name": "Cappuccino",
+    "price": 35000,
+    "category": "Cà phê",
+    "image": "https://images.unsplash.com/photo-1517668808822-9ebb02ae2a0e?w=500&h=500&fit=crop",
+    "description": "Cappuccino ngon, đầy đủ crema"
+  },
+  {
+    "id": "5",
+    "name": "Latte",
+    "price": 35000,
+    "category": "Cà phê",
+    "image": "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&h=500&fit=crop",
+    "description": "Latte mượt mà, sữa nhiều"
+  },
+  {
+    "id": "6",
+    "name": "Trà xanh đá",
+    "price": 20000,
+    "category": "Trà",
+    "image": "https://images.unsplash.com/photo-1597318972826-c0ebb10a1ba0?w=500&h=500&fit=crop",
+    "description": "Trà xanh tươi mát, an toàn và tốt cho sức khỏe"
+  },
+  {
+    "id": "7",
+    "name": "Trà đen đá",
+    "price": 20000,
+    "category": "Trà",
+    "image": "https://images.unsplash.com/photo-1597318972826-c0ebb10a1ba0?w=500&h=500&fit=crop",
+    "description": "Trà đen lạnh, thanh mát và tỉnh táo"
+  },
+  {
+    "id": "8",
+    "name": "Trà oolong",
+    "price": 25000,
+    "category": "Trà",
+    "image": "https://images.unsplash.com/photo-1597318972826-c0ebb10a1ba0?w=500&h=500&fit=crop",
+    "description": "Trà oolong hương thơm, vị ngon"
+  },
+  {
+    "id": "9",
+    "name": "Trà hoa quả",
+    "price": 28000,
+    "category": "Trà",
+    "image": "https://images.unsplash.com/photo-1597318972826-c0ebb10a1ba0?w=500&h=500&fit=crop",
+    "description": "Trà hoa quả đa sắc, vị tươi mát"
+  },
+  {
+    "id": "10",
+    "name": "Sinh tố dâu",
+    "price": 32000,
+    "category": "Sinh tố",
+    "image": "https://images.unsplash.com/photo-1610970881917-8a03fbc23483?w=500&h=500&fit=crop",
+    "description": "Sinh tố dâu tây tươi mới, mát lạnh"
+  },
+  {
+    "id": "11",
+    "name": "Sinh tố xoài",
+    "price": 32000,
+    "category": "Sinh tố",
+    "image": "https://images.unsplash.com/photo-1610970881917-8a03fbc23483?w=500&h=500&fit=crop",
+    "description": "Sinh tố xoài ngọt, thơm lừng"
+  },
+  {
+    "id": "12",
+    "name": "Sinh tố chuối",
+    "price": 28000,
+    "category": "Sinh tố",
+    "image": "https://images.unsplash.com/photo-1610970881917-8a03fbc23483?w=500&h=500&fit=crop",
+    "description": "Sinh tố chuối mướt, bổ dưỡng"
+  },
+  {
+    "id": "13",
+    "name": "Sinh tố việt quất",
+    "price": 35000,
+    "category": "Sinh tố",
+    "image": "https://images.unsplash.com/photo-1610970881917-8a03fbc23483?w=500&h=500&fit=crop",
+    "description": "Sinh tố việt quất tây, giàu vitamin"
+  }
+]

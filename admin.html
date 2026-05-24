@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>CaféBook Admin</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body class="cb-admin-body">
+    <!-- ADMIN LOGIN -->
+    <div id="adminLoginScreen" class="cb-admin-login-screen">
+      <div class="cb-admin-login-card">
+        <div class="text-center mb-4">
+          <div class="cb-admin-logo mb-3">
+            <i class="bi bi-cup-hot-fill"></i>
+          </div>
+          <h4 class="fw-bold">CaféBook Admin</h4>
+          <p class="text-muted small">Đăng nhập để quản lý hệ thống</p>
+        </div>
+        <form id="adminLoginForm" novalidate>
+          <div class="mb-3">
+            <label class="form-label cb-label">Tên đăng nhập</label>
+            <div class="input-group">
+              <span class="input-group-text cb-ig-text"
+                ><i class="bi bi-person"></i
+              ></span>
+              <input
+                type="text"
+                class="form-control cb-input"
+                id="adminUser"
+                placeholder="admin"
+              />
+            </div>
+            <div class="cb-error-msg" id="err-adminUser"></div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label cb-label">Mật khẩu</label>
+            <div class="input-group">
+              <span class="input-group-text cb-ig-text"
+                ><i class="bi bi-lock"></i
+              ></span>
+              <input
+                type="password"
+                class="form-control cb-input"
+                id="adminPass"
+                placeholder="••••••••"
+              />
+              <button
+                class="btn cb-ig-text"
+                type="button"
+                onclick="toggleAdminPwd()"
+              >
+                <i class="bi bi-eye" id="adminEyeIcon"></i>
+              </button>
+            </div>
+            <div class="cb-error-msg" id="err-adminPass"></div>
+          </div>
+          <div
+            id="adminLoginError"
+            class="alert alert-danger py-2 d-none small"
+          ></div>
+          <button type="submit" class="btn cb-btn-primary w-100 py-2">
+            <i class="bi bi-shield-lock me-2"></i>Đăng nhập Admin
+          </button>
+          <div class="text-center mt-3">
+            <small class="text-muted">Demo: <b>admin</b> / admin123</small>
+          </div>
+          <div class="text-center mt-2">
+            <a href="index.html" class="small text-muted"
+              ><i class="bi bi-arrow-left me-1"></i>Về trang khách</a
+            >
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="adminDashboard" class="d-none">
+      <div class="cb-admin-sidebar" id="adminSidebar">
+        <div class="cb-admin-brand">
+          <i class="bi bi-cup-hot-fill"></i>
+          <div>
+            <div class="fw-bold">CaféBook</div>
+            <div style="font-size: 11px; opacity: 0.7">Admin Panel</div>
+          </div>
+        </div>
+        <nav class="cb-admin-nav">
+          <a
+            href="#"
+            class="cb-admin-nav-item active"
+            data-page="dashboard"
+            onclick="showPage('dashboard')"
+            ><i class="bi bi-speedometer2"></i><span>Dashboard</span></a
+          >
+          <a
+            href="#"
+            class="cb-admin-nav-item"
+            data-page="analytics"
+            onclick="showPage('analytics')"
+            ><i class="bi bi-bar-chart-line"></i
+            ><span>Phân tích bán hàng</span></a
+          >
+          <a
+            href="#"
+            class="cb-admin-nav-item"
+            data-page="drinks"
+            onclick="showPage('drinks')"
+            ><i class="bi bi-cup-hot"></i><span>Thực đơn</span></a
+          >
+          <a
+            href="#"
+            class="cb-admin-nav-item"
+            data-page="tables"
+            onclick="showPage('tables')"
+            ><i class="bi bi-layout-split"></i><span>Quản lý bàn</span></a
+          >
+          <a
+            href="#"
+            class="cb-admin-nav-item"
+            data-page="reservations"
+            onclick="showPage('reservations')"
+            ><i class="bi bi-calendar-check"></i><span>Đặt bàn / Đơn hàng</span
+            ><span class="cb-nav-badge" id="pendingCount">0</span></a
+          >
+          <a
+            href="#"
+            class="cb-admin-nav-item"
+            data-page="notifications"
+            onclick="showPage('notifications')"
+            ><i class="bi bi-bell"></i><span>Thông báo</span></a
+          >
+        </nav>
+        <div class="cb-admin-nav-footer">
+          <a href="index.html" class="cb-admin-nav-item"
+            ><i class="bi bi-house"></i><span>Trang khách</span></a
+          >
+          <a href="#" class="cb-admin-nav-item" onclick="adminLogout()"
+            ><i class="bi bi-box-arrow-right"></i><span>Đăng xuất</span></a
+          >
+        </div>
+      </div>
+
+      <div class="cb-admin-main">
+        <div class="cb-admin-topbar">
+          <div class="d-flex align-items-center gap-3">
+            <button
+              class="btn cb-sidebar-toggle d-lg-none"
+              onclick="toggleSidebar()"
+            >
+              <i class="bi bi-list fs-4"></i>
+            </button>
+            <h6 class="mb-0 fw-bold" id="pageTitle">Dashboard</h6>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <span
+              class="text-muted small d-none d-md-block"
+              id="adminTime"
+            ></span>
+            <div class="cb-admin-avatar" id="adminAvatarText">AD</div>
+            <span class="fw-500 small d-none d-md-block" id="adminNameDisplay"
+              >Admin</span
+            >
+          </div>
+        </div>
+
+        <!-- DASHBOARD PAGE -->
+        <div id="page-dashboard" class="cb-page">
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="cb-stat-card cb-stat-green">
+                <div class="cb-stat-icon">
+                  <i class="bi bi-calendar-check"></i>
+                </div>
+                <div class="cb-stat-num" id="stat-total">—</div>
+                <div class="cb-stat-lbl">Tổng đặt bàn</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="cb-stat-card cb-stat-amber">
+                <div class="cb-stat-icon">
+                  <i class="bi bi-hourglass-split"></i>
+                </div>
+                <div class="cb-stat-num" id="stat-pending">—</div>
+                <div class="cb-stat-lbl">Chờ xác nhận</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="cb-stat-card cb-stat-blue">
+                <div class="cb-stat-icon">
+                  <i class="bi bi-check-circle"></i>
+                </div>
+                <div class="cb-stat-num" id="stat-confirmed">—</div>
+                <div class="cb-stat-lbl">Đã xác nhận</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="cb-stat-card cb-stat-coral">
+                <div class="cb-stat-icon"><i class="bi bi-cup-hot"></i></div>
+                <div class="cb-stat-num" id="stat-drinks">—</div>
+                <div class="cb-stat-lbl">Món trong menu</div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-lg-8">
+              <div class="cb-admin-card">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h6 class="fw-bold mb-0">Đặt bàn / Đơn hàng gần đây</h6>
+                  <button
+                    class="btn cb-btn-sm"
+                    onclick="showPage('reservations')"
+                  >
+                    Xem tất cả <i class="bi bi-arrow-right ms-1"></i>
+                  </button>
+                </div>
+                <div id="recentReservations">
+                  <div class="text-center py-3">
+                    <div class="cb-spinner"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="cb-admin-card">
+                <h6 class="fw-bold mb-3">
+                  <i class="bi bi-fire me-2 text-danger"></i>Top món bán chạy
+                </h6>
+                <div id="topDrinksWidget">
+                  <div class="text-center py-3">
+                    <div class="cb-spinner"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ANALYTICS PAGE -->
+        <div id="page-analytics" class="cb-page d-none">
+          <div class="mb-4">
+            <h5 class="fw-bold mb-0">Phân tích bán hàng</h5>
+            <p class="text-muted small mb-0">Dữ liệu doanh thu và bán hàng</p>
+          </div>
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+              <div class="cb-stat-card cb-stat-green">
+                <div class="cb-stat-icon"><i class="bi bi-cash-coin"></i></div>
+                <div class="cb-stat-num" id="an-revenue">—</div>
+                <div class="cb-stat-lbl">Tổng doanh thu</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="cb-stat-card cb-stat-amber">
+                <div class="cb-stat-icon"><i class="bi bi-bag"></i></div>
+                <div class="cb-stat-num" id="an-orders">—</div>
+                <div class="cb-stat-lbl">Tổng đơn hàng</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="cb-stat-card cb-stat-blue">
+                <div class="cb-stat-icon"><i class="bi bi-cup"></i></div>
+                <div class="cb-stat-num" id="an-items">—</div>
+                <div class="cb-stat-lbl">Tổng items</div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="cb-stat-card cb-stat-coral">
+                <div class="cb-stat-icon"><i class="bi bi-graph-up"></i></div>
+                <div class="cb-stat-num" id="an-avg">—</div>
+                <div class="cb-stat-lbl">TB/Đơn</div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-lg-8">
+              <div class="cb-admin-card p-3">
+                <h6 class="fw-bold mb-3">
+                  <i class="bi bi-bar-chart me-2 cb-text-green"></i>Bảng xếp
+                  hạng (Top 10)
+                </h6>
+                <div class="table-responsive">
+                  <table class="table cb-table sm mb-0">
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Tên</th>
+                        <th>Danh mục</th>
+                        <th>Sl</th>
+                        <th>Doanh thu</th>
+                        <th>%</th>
+                      </tr>
+                    </thead>
+                    <tbody id="analyticsTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="cb-admin-card p-3">
+                <h6 class="fw-bold mb-3">
+                  <i class="bi bi-pie-chart me-2 cb-text-green"></i>Theo danh
+                  mục
+                </h6>
+                <div id="categoryChart"></div>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3 mt-2">
+            <div class="col-lg-4">
+              <div class="cb-admin-card p-3">
+                <h6 class="fw-bold mb-3">
+                  <i class="bi bi-layout-split me-2 cb-text-green"></i>Loại đơn
+                  hàng
+                </h6>
+                <div id="orderTypeChart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DRINKS PAGE -->
+        <div id="page-drinks" class="cb-page d-none">
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"
+          >
+            <div>
+              <h5 class="fw-bold mb-0">Quản lý thực đơn</h5>
+              <p class="text-muted small mb-0">Thêm, sửa, xóa đồ uống</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn cb-btn-primary" onclick="openDrinkModal()">
+                <i class="bi bi-plus-lg me-1"></i>Thêm món
+              </button>
+              <button
+                class="btn btn-outline-secondary"
+                onclick="openImportDrinksModal()"
+                title="Import từ API"
+              >
+                <i class="bi bi-cloud-download me-1"></i>Import API
+              </button>
+            </div>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
+              <input
+                type="text"
+                class="form-control cb-input"
+                id="adminSearchDrink"
+                placeholder="Tìm kiếm món..."
+              />
+            </div>
+            <div class="col-md-3">
+              <select class="form-select cb-input" id="adminFilterCat">
+                <option value="">Tất cả danh mục</option>
+                <option>Cà phê</option>
+                <option>Trà</option>
+                <option>Sinh tố</option>
+                <option>Snack</option>
+              </select>
+            </div>
+          </div>
+          <div id="drinksLoading" class="text-center py-4 d-none">
+            <div class="cb-spinner"></div>
+          </div>
+          <div class="cb-admin-card p-0 overflow-hidden">
+            <div class="table-responsive">
+              <table class="table cb-table mb-0">
+                <thead>
+                  <tr>
+                    <th style="width: 60px">Ảnh</th>
+                    <th>Tên món</th>
+                    <th>Danh mục</th>
+                    <th>Giá</th>
+                    <th>Mô tả</th>
+                    <th style="width: 110px">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="drinksTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLES PAGE -->
+        <div id="page-tables" class="cb-page d-none">
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"
+          >
+            <div>
+              <h5 class="fw-bold mb-0">Quản lý bàn</h5>
+              <p class="text-muted small mb-0">
+                Xem và cập nhật trạng thái bàn
+              </p>
+            </div>
+            <button class="btn cb-btn-primary" onclick="openTableModal()">
+              <i class="bi bi-plus-lg me-1"></i>Thêm bàn
+            </button>
+          </div>
+          <div class="d-flex gap-3 mb-3 flex-wrap">
+            <span class="cb-legend cb-legend-available"
+              >Còn trống: <strong id="tableStatAvail">0</strong></span
+            >
+            <span class="cb-legend cb-legend-reserved"
+              >Đã đặt: <strong id="tableStatReserved">0</strong></span
+            >
+            <span class="cb-legend cb-legend-occupied"
+              >Đang dùng: <strong id="tableStatOccupied">0</strong></span
+            >
+          </div>
+          <div id="adminTablesLoading" class="text-center py-4">
+            <div class="cb-spinner"></div>
+          </div>
+          <div class="row g-3" id="adminTablesGrid"></div>
+        </div>
+
+        <!-- RESERVATIONS PAGE -->
+        <div id="page-reservations" class="cb-page d-none">
+          <div
+            class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"
+          >
+            <div>
+              <h5 class="fw-bold mb-0">Đặt bàn & Đơn hàng</h5>
+              <p class="text-muted small mb-0">
+                Quản lý và xác nhận đơn đặt bàn, đặt món
+              </p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+              <select
+                class="form-select cb-input"
+                id="filterType"
+                style="width: auto"
+                onchange="filterReservations()"
+              >
+                <option value="">Tất cả loại</option>
+                <option value="reservation">Đặt bàn</option>
+                <option value="order">Đặt món</option>
+              </select>
+              <select
+                class="form-select cb-input"
+                id="filterStatus"
+                style="width: auto"
+                onchange="filterReservations()"
+              >
+                <option value="">Tất cả trạng thái</option>
+                <option value="pending">Chờ xác nhận</option>
+                <option value="confirmed">Đã xác nhận</option>
+                <option value="cancelled">Đã hủy</option>
+              </select>
+              <button class="btn cb-btn-sm" onclick="loadAdminReservations()">
+                <i class="bi bi-arrow-clockwise me-1"></i>Làm mới
+              </button>
+            </div>
+          </div>
+          <div id="reservLoading" class="text-center py-4">
+            <div class="cb-spinner"></div>
+          </div>
+          <div class="cb-admin-card p-0 overflow-hidden">
+            <div class="table-responsive">
+              <table class="table cb-table mb-0">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Loại</th>
+                    <th>Khách hàng</th>
+                    <th>Chi tiết</th>
+                    <th>Bàn / Địa chỉ</th>
+                    <th>Ngày & Giờ</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="reservTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="d-flex justify-content-center mt-4"
+            id="reservPagination"
+          ></div>
+        </div>
+
+        <!-- NOTIFICATIONS PAGE -->
+        <div id="page-notifications" class="cb-page d-none">
+          <div class="mb-4">
+            <h5 class="fw-bold mb-0">Gửi thông báo</h5>
+            <p class="text-muted small mb-0">
+              Gửi ưu đãi và thông báo tới khách hàng
+            </p>
+          </div>
+          <div class="row g-4">
+            <div class="col-lg-6">
+              <div class="cb-admin-card">
+                <h6 class="fw-bold mb-3">
+                  <i class="bi bi-send me-2 cb-text-green"></i>Tạo thông báo mới
+                </h6>
+                <form id="notifyForm" novalidate>
+                  <div class="mb-3">
+                    <label class="form-label cb-label">Loại thông báo</label>
+                    <select class="form-select cb-input" id="notifyType">
+                      <option value="promo">🎁 Khuyến mãi</option>
+                      <option value="confirm">✅ Xác nhận đặt bàn</option>
+                      <option value="info">ℹ️ Thông tin chung</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label cb-label"
+                      >Tiêu đề <span class="text-danger">*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-control cb-input"
+                      id="notifyTitle"
+                      placeholder="Ưu đãi đặc biệt cuối tuần!"
+                    />
+                    <div class="cb-error-msg" id="err-notifyTitle"></div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label cb-label"
+                      >Nội dung <span class="text-danger">*</span></label
+                    >
+                    <textarea
+                      class="form-control cb-input"
+                      id="notifyContent"
+                      rows="4"
+                      placeholder="Nội dung thông báo..."
+                    ></textarea>
+                    <div class="cb-error-msg" id="err-notifyContent"></div>
+                  </div>
+                  <button type="submit" class="btn cb-btn-primary w-100">
+                    <i class="bi bi-send me-2"></i>Gửi thông báo
+                  </button>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="cb-admin-card">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <h6 class="fw-bold mb-0">
+                    <i class="bi bi-clock-history me-2 cb-text-green"></i>Lịch
+                    sử gửi
+                  </h6>
+                  <button class="btn cb-btn-sm" onclick="clearNotifyHistory()">
+                    <i class="bi bi-trash3 me-1"></i>Xóa
+                  </button>
+                </div>
+                <div id="notifyHistory">
+                  <div class="cb-notify-item cb-notify-promo">
+                    <div class="d-flex justify-content-between">
+                      <strong>Giảm 20% cuối tuần</strong
+                      ><span class="badge bg-warning text-dark"
+                        >Khuyến mãi</span
+                      >
+                    </div>
+                    <p class="small text-muted mb-0 mt-1">
+                      Áp dụng từ 20/6 – 22/6/2025
+                    </p>
+                  </div>
+                  <div class="cb-notify-item cb-notify-confirm">
+                    <div class="d-flex justify-content-between">
+                      <strong>Xác nhận đặt bàn #001</strong
+                      ><span class="badge bg-success">Xác nhận</span>
+                    </div>
+                    <p class="small text-muted mb-0 mt-1">
+                      Bàn B2, 19/6/2025 lúc 18:00
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRINK MODAL -->
+    <div class="modal fade" id="drinkEditModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content cb-modal">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold" id="drinkModalTitle">
+              Thêm món mới
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="drinkForm" novalidate>
+              <input type="hidden" id="drinkId" />
+              <div class="mb-3">
+                <label class="form-label cb-label"
+                  >Tên món <span class="text-danger">*</span></label
+                ><input
+                  type="text"
+                  class="form-control cb-input"
+                  id="drinkName"
+                  placeholder="Cà phê sữa đá"
+                />
+                <div class="cb-error-msg" id="err-drinkName"></div>
+              </div>
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="form-label cb-label"
+                    >Giá (VNĐ) <span class="text-danger">*</span></label
+                  ><input
+                    type="number"
+                    class="form-control cb-input"
+                    id="drinkPrice"
+                    min="1000"
+                    placeholder="35000"
+                  />
+                  <div class="cb-error-msg" id="err-drinkPrice"></div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label cb-label"
+                    >Danh mục <span class="text-danger">*</span></label
+                  ><select class="form-select cb-input" id="drinkCategory">
+                    <option value="">Chọn danh mục</option>
+                    <option>Cà phê</option>
+                    <option>Trà</option>
+                    <option>Sinh tố</option>
+                    <option>Snack</option>
+                  </select>
+                  <div class="cb-error-msg" id="err-drinkCategory"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label cb-label"
+                  >URL ảnh <span class="text-danger">*</span></label
+                ><input
+                  type="text"
+                  class="form-control cb-input"
+                  id="drinkImage"
+                  placeholder="https://..."
+                />
+                <div class="cb-error-msg" id="err-drinkImage"></div>
+              </div>
+              <div class="mb-2" id="drinkImgPreviewWrap" style="display: none">
+                <img
+                  id="drinkImgPreview"
+                  src=""
+                  class="cb-admin-thumb"
+                  style="
+                    width: 80px;
+                    height: 80px;
+                    object-fit: cover;
+                    border-radius: 8px;
+                  "
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label cb-label">Mô tả</label
+                ><textarea
+                  class="form-control cb-input"
+                  id="drinkDesc"
+                  rows="2"
+                  placeholder="Mô tả ngắn về món..."
+                ></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer border-0">
+            <button class="btn cb-btn-outline" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button
+              class="btn cb-btn-primary"
+              id="saveDrinkBtn"
+              onclick="saveDrink()"
+            >
+              <span id="saveDrinkText">Lưu món</span
+              ><span id="saveDrinkSpinner" class="d-none"
+                ><div class="cb-spinner-sm d-inline-block me-1"></div
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPORT DRINKS MODAL -->
+    <div class="modal fade" id="importDrinksModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content cb-modal">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold">Import đồ uống từ API</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="importDrinksForm" novalidate>
+              <div class="mb-3">
+                <label class="form-label cb-label"
+                  >URL API <span class="text-danger">*</span></label
+                >
+                <small class="text-muted d-block mb-2"
+                  >API phải return mảng JSON với các field: name/title, price,
+                  category, image</small
+                >
+                <input
+                  type="text"
+                  class="form-control cb-input"
+                  id="importDrinksUrl"
+                  placeholder="https://api.example.com/drinks"
+                />
+                <div class="cb-error-msg" id="err-importDrinksUrl"></div>
+              </div>
+              <div id="importDrinksResult"></div>
+            </form>
+          </div>
+          <div class="modal-footer border-0">
+            <button class="btn cb-btn-outline" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button
+              class="btn cb-btn-primary"
+              id="importDrinksBtn"
+              onclick="importDrinksFromApi()"
+            >
+              <span id="importDrinksText">Import</span
+              ><span id="importDrinksSpinner" class="d-none"
+                ><div class="cb-spinner-sm d-inline-block me-1"></div
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE MODAL -->
+    <div class="modal fade" id="tableEditModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content cb-modal">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold" id="tableModalTitle">
+              Thêm bàn mới
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="tableForm" novalidate>
+              <input type="hidden" id="tableId" />
+              <div class="mb-3">
+                <label class="form-label cb-label"
+                  >Tên bàn <span class="text-danger">*</span></label
+                ><input
+                  type="text"
+                  class="form-control cb-input"
+                  id="tableName"
+                  placeholder="Bàn A1"
+                />
+                <div class="cb-error-msg" id="err-tableName"></div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label cb-label"
+                  >Sức chứa (người) <span class="text-danger">*</span></label
+                ><input
+                  type="number"
+                  class="form-control cb-input"
+                  id="tableCapacity"
+                  min="1"
+                  placeholder="2"
+                />
+                <div class="cb-error-msg" id="err-tableCapacity"></div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer border-0">
+            <button class="btn cb-btn-outline" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button
+              class="btn cb-btn-primary"
+              id="saveTableBtn"
+              onclick="saveTable()"
+            >
+              <span id="saveTableText">Lưu bàn</span
+              ><span id="saveTableSpinner" class="d-none"
+                ><div class="cb-spinner-sm d-inline-block me-1"></div
+              ></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESERVATION DETAIL MODAL -->
+    <div class="modal fade" id="reservDetailModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content cb-modal">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold" id="reservDetailTitle">
+              Chi tiết đơn
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body" id="reservDetailBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DELETE CONFIRM MODAL -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content cb-modal">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold">Xác nhận xóa</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p id="deleteConfirmMsg"></p>
+          </div>
+          <div class="modal-footer border-0">
+            <button class="btn cb-btn-outline" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button class="btn btn-danger" id="confirmDeleteBtn">Xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="cbToast" class="cb-toast" role="alert">
+      <div id="cbToastMsg"></div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api.js"></script>
+    <script src="utils.js"></script>
+    <script src="admin.js"></script>
+  </body>
+</html>
