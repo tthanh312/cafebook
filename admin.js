@@ -381,26 +381,28 @@ async function importDrinksFromApi(){
 
 // ===== TABLES CRUD =====
 async function loadAdminTables(){
-  $('#tablesLoading').removeClass('d-none');$('#tablesTableBody').html('');
   try{
     adminTables=await getTables();
-    $('#tablesLoading').addClass('d-none');
     renderTablesTable(adminTables);
-  }catch{$('#tablesLoading').addClass('d-none');showToast('Không thể tải bàn','error');}
+  }catch{showToast('Không thể tải bàn','error');}
 }
 
 function renderTablesTable(tables){
-  const tbody=document.getElementById('tablesTableBody');
-  if(!tables||!tables.length){tbody.innerHTML='<tr><td colspan="4" class="text-center text-muted py-4">Chưa có bàn nào.</td></tr>';return;}
-  tbody.innerHTML=tables.map(t=>`<tr>
-    <td><strong>${t.name||t.tableName||'—'}</strong></td>
-    <td><span class="badge bg-light text-dark border">${t.capacity||'—'} chỗ</span></td>
-    <td><span class="cb-status ${t.status==='available'?'cb-status-confirmed':'cb-status-pending'}">${t.status==='available'?'Trống':'Đang sử dụng'}</span></td>
-    <td class="text-nowrap">
-      <button class="btn btn-sm btn-outline-success me-1" onclick="openTableModal('${t.id}')" title="Sửa"><i class="bi bi-pencil"></i></button>
-      <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('table','${t.id}','${(t.name||t.tableName||'').replace(/'/g,'')}')" title="Xóa"><i class="bi bi-trash3"></i></button>
-    </td>
-  </tr>`).join('');
+  const container=document.getElementById('adminTablesGrid');
+  if(!container){console.error('adminTablesGrid not found');return;}
+  if(!tables||!tables.length){container.innerHTML='<div class="col-12"><p class="text-center text-muted py-4">Chưa có bàn nào.</p></div>';return;}
+  container.innerHTML=tables.map(t=>`
+    <div class="col-sm-6 col-lg-4">
+      <div class="cb-admin-card">
+        <h6 class="fw-bold mb-2">${t.name||t.tableName||'—'}</h6>
+        <p class="mb-2"><span class="badge bg-light text-dark border">${t.capacity||'—'} chỗ</span></p>
+        <p class="mb-3"><span class="cb-status ${t.status==='available'?'cb-status-confirmed':'cb-status-pending'}">${t.status==='available'?'Trống':'Đang sử dụng'}</span></p>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-success flex-grow-1" onclick="openTableModal('${t.id}')" title="Sửa"><i class="bi bi-pencil me-1"></i>Sửa</button>
+          <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('table','${t.id}','${(t.name||t.tableName||'').replace(/'/g,'')}')" title="Xóa"><i class="bi bi-trash3"></i></button>
+        </div>
+      </div>
+    </div>`).join('');
 }
 
 function openTableModal(id=null){
@@ -445,17 +447,22 @@ async function saveTable(){
 
 // ===== RESERVATIONS CRUD =====
 async function loadAdminReservations(){
-  $('#reservationsLoading').removeClass('d-none');$('#reservationsTableBody').html('');
+  const loading=document.getElementById('reservLoading');
+  if(loading) loading.style.display='';
   try{
     adminReservations=await getReservations();
-    $('#reservationsLoading').addClass('d-none');
+    if(loading) loading.style.display='none';
     filteredReservations=adminReservations;
     renderReservationsTable(adminReservations);
-  }catch{$('#reservationsLoading').addClass('d-none');showToast('Không thể tải đơn','error');}
+  }catch{
+    if(loading) loading.style.display='none';
+    showToast('Không thể tải đơn','error');
+  }
 }
 
 function renderReservationsTable(reservations){
-  const tbody=document.getElementById('reservationsTableBody');
+  const tbody=document.getElementById('reservTableBody');
+  if(!tbody){console.error('reservTableBody not found');return;}
   if(!reservations||!reservations.length){tbody.innerHTML='<tr><td colspan="9" class="text-center text-muted py-4">Chưa có đơn nào.</td></tr>';return;}
   tbody.innerHTML=reservations.map(r=>{
     const rtype=r.type||'reservation';
